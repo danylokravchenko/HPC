@@ -1,0 +1,135 @@
+#!/bin/sh
+#SBATCH --job-name=Exercise2Task2c
+#SBATCH --time=20:00:00
+#SBATCH --nodes=1
+#SBATCH --partition=xeon
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-socket=1
+#SBATCH --cpus-per-task=20
+#SBATCH --hint=nomultithread
+#SBATCH --output=T2-c-result
+
+ml intel/2019a
+
+export OMP_PROC_BIND=close
+export OMP_PLACES="cores"
+export KMP_CPU_SPEED=2600
+export LD_LIBRARY_PATH=/storage/shared/projects/dls-openmp/exerciseScheduleHPC/libomp/intel/runtime/src/:$LD_LIBRARY_PATH
+
+# block_size = 36 => floor(sqrt(32K/(3*8)))
+
+echo "DYNAMIC SCHEDULE"
+export OMP_SCHEDULE=dynamic
+
+export OMP_NUM_THREADS=16
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_dynamic.o
+./T2_dynamic.o 4000 0
+./T2_dynamic.o 4000 36
+
+export OMP_NUM_THREADS=8
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_dynamic.o
+./T2_dynamic.o 4000 0
+./T2_dynamic.o 4000 36
+
+export OMP_NUM_THREADS=4
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_dynamic.o
+./T2_dynamic.o 4000 0
+./T2_dynamic.o 4000 36
+
+export OMP_NUM_THREADS=2
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_dynamic.o
+./T2_dynamic.o 4000 0
+./T2_dynamic.o 4000 36
+
+
+echo "STATIC SCHEDULE"
+export OMP_SCHEDULE=static
+
+export OMP_NUM_THREADS=16
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_static.o
+./T2_static.o 4000 0
+./T2_static.o 4000 36
+
+export OMP_NUM_THREADS=8
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_static.o
+./T2_static.o 4000 0
+./T2_static.o 4000 36
+
+export OMP_NUM_THREADS=4
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_static.o
+./T2_static.o 4000 0
+./T2_static.o 4000 36
+
+export OMP_NUM_THREADS=2
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_static.o
+./T2_static.o 4000 0
+./T2_static.o 4000 36
+
+echo "GUIDED SCHEDULE"
+export OMP_SCHEDULE=guided
+
+export OMP_NUM_THREADS=16
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_guided.o
+./T2_guided.o 4000 0
+./T2_guided.o 4000 36
+
+export OMP_NUM_THREADS=8
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_guided.o
+./T2_guided.o 4000 0
+./T2_guided.o 4000 36
+
+export OMP_NUM_THREADS=4
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_guided.o
+./T2_guided.o 4000 0
+./T2_guided.o 4000 36
+
+export OMP_NUM_THREADS=2
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_guided.o
+./T2_guided.o 4000 0
+./T2_guided.o 4000 36
+
+echo "FAC2 SCHEDULE"
+export OMP_SCHEDULE="fac2"
+
+export OMP_NUM_THREADS=16
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_fac2.o
+./T2_fac2.o 4000 0
+./T2_fac2.o 4000 36
+
+export OMP_NUM_THREADS=8
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_fac2.o
+./T2_fac2.o 4000 0
+./T2_fac2.o 4000 36
+
+export OMP_NUM_THREADS=4
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_fac2.o
+./T2_fac2.o 4000 0
+./T2_fac2.o 4000 36
+
+export OMP_NUM_THREADS=2
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_fac2.o
+./T2_fac2.o 4000 0
+./T2_fac2.o 4000 36
+
+echo "AF SCHEDULE"
+export OMP_SCHEDULE="af"
+
+export OMP_NUM_THREADS=16
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_af.o
+./T2_af.o 4000 0
+./T2_af.o 4000 36
+
+export OMP_NUM_THREADS=8
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_af.o
+./T2_af.o 4000 0
+./T2_af.o 4000 36
+
+export OMP_NUM_THREADS=4
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_af.o
+./T2_af.o 4000 0
+./T2_af.o 4000 36
+
+export OMP_NUM_THREADS=2
+icc -O3 -fopenmp -lstdc++ T2_schedule.c -o T2_af.o
+./T2_af.o 4000 0
+./T2_af.o 4000 36

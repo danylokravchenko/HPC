@@ -1,0 +1,38 @@
+#!/bin/sh
+#SBATCH --job-name=Exercise2Task3
+#SBATCH --time=12:00:00
+#SBATCH --nodes=1
+#SBATCH --partition=xeon
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-socket=1
+#SBATCH --cpus-per-task=20
+#SBATCH --hint=nomultithread
+#SBATCH --output=T3-result
+
+ml intel/2019a
+
+export OMP_PROC_BIND=close
+export OMP_PLACES="cores"
+export KMP_CPU_SPEED=2600
+export LD_LIBRARY_PATH=/storage/shared/projects/dls-openmp/exerciseScheduleHPC/libomp/intel/runtime/src/:$LD_LIBRARY_PATH
+
+# block_size = 36 => floor(sqrt(32K/(3*8)))
+export OMP_NUM_THREADS=16
+icc -O3 -fopenmp -lstdc++ T3.c -o T3.o
+./T3.o 4000 0
+./T3.o 4000 36
+
+export OMP_NUM_THREADS=8
+icc -O3 -fopenmp -lstdc++ T3.c -o T3.o
+./T3.o 4000 0
+./T3.o 4000 36
+
+export OMP_NUM_THREADS=4
+icc -O3 -fopenmp -lstdc++ T3.c -o T3.o
+./T3.o 4000 0
+./T1.o 4000 36
+
+export OMP_NUM_THREADS=2
+icc -O3 -fopenmp -lstdc++ T3.c -o T3.o
+./T3.o 4000 0
+./T3.o 4000 36

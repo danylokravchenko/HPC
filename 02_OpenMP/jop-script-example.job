@@ -1,0 +1,28 @@
+#!/bin/sh
+#SBATCH --job-name=Exercise2Task2
+#SBATCH --time=00:05:00
+#SBATCH --nodes=1
+#SBATCH --partition=xeon
+#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks-per-socket=1
+#SBATCH --cpus-per-task=20
+#SBATCH --hint=nomultithread
+
+ml intel/2019a
+
+export OMP_SCHEDULE=dynamic
+#export OMP_SCHEDULE=static
+#export OMP_SCHEDULE=guided
+#export OMP_SCHEDULE="fac2"
+#export OMP_SCHEDULE="af"
+
+
+
+export OMP_NUM_THREADS=20
+export OMP_PROC_BIND=close
+export OMP_PLACES="cores"
+export KMP_CPU_SPEED=2600
+export LD_LIBRARY_PATH=/storage/shared/projects/dls-openmp/exerciseScheduleHPC/libomp/intel/runtime/src/:$LD_LIBRARY_PATH
+
+
+srun program_args args 

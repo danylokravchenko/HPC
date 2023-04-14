@@ -1,0 +1,40 @@
+#!/bin/sh
+#SBATCH --job-name=exercise01.T2
+#SBATCH --time=1:30:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=1
+#SBATCH --partition=xeon
+#SBATCH --hint=nomultithread
+#SBATCH --output=Tx-result
+
+####### NODES #######
+# --nodes=number of nodes that you will be requesting to the resource management system, in this case Slurm.
+####### NODES #######
+
+####### PROCESSES #######
+# --ntasks-per-node=number of processes (e.g. MPI ranks) that you will be requesting to the resource management system, in this case Slurm.
+####### PROCESSES #######
+
+####### THREADS #######
+# --cpus-per-task=number of threads (e.g. OpenMP Threads) for each process (e.g. MPI ranks) that you will be requesting to the resource management system, in this case Slurm.
+####### THREADS #######
+
+####### OUTPUT #######
+# --output=name and/or path where the results will be saved.
+####### OUTPUT #######
+
+
+####### This exercise is sequential. Therefore, you only need 1 node, 1 process, and 1 thread #######
+
+
+ml intel/2018b
+
+# Modify the following line to execute your solutions
+# for T2:
+icc T2.c -o T2
+srun ./T2 2000 0
+srun ./T2 2000 1
+srun ./T2 2000 2
+
+
